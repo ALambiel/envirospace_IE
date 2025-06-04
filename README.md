@@ -36,6 +36,7 @@ repo_root/
 │   ├── ...
 │── prioritization/ 
 │── README.md                            # This documentation
+│── tools/                           
 ```
 
 ## Getting started
