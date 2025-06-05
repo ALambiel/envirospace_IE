@@ -1,5 +1,5 @@
 # Identifying Ecological Infrastructure
-This repository contains R scripts, configuration files, and documentation for the identification and update of Ecological Infrastructure (EI), according to the method proposed by GE21. https://www.ge21.ch/
+This repository contains R scripts, configuration files, and documentation for the identification and update of Ecological Infrastructure (EI), according to the method proposed by [GE21](https://www.ge21.ch/). 
 This work has been designed to be used via a shared environment on JupyterHub. The scripts have therefore been written to being run in this kind of environment. 
 
 ## 📌 Overview 
@@ -43,8 +43,8 @@ From your personnal workspace on JupyterLab:
 1. Clone this repository
 
 ```bash
-git clone <repo_url>
-cd <repo_name>
+git clone https://github.com/ALambiel/envirospace_IE
+cd envirospace_IE
 ```
 
 2. Deploy environments and install dependencies
