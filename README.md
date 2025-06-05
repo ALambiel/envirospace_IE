@@ -1,24 +1,22 @@
 # Identifying Ecological Infrastructure
-This repository contains R scripts, configuration files, and documentation for the identification and update of Ecological Infrastructure (EI), according to the method proposed by GE21. 
+This repository contains R scripts, configuration files, and documentation for the identification and update of Ecological Infrastructure (EI), according to the method proposed by GE21. https://www.ge21.ch/
 This work has been designed to be used via a shared environment on JupyterHub. The scripts have therefore been written to being run in this kind of environment. 
 
 ## 📌 Overview 
-The aim of these scripts is to produce raster layers for each of the indicators used to build the pillars of the ecological infrastructure. The users decide on the data to be used as well as on certain methodological parameters. Then, the scripts link this data to the appropriate tools/software (e.g., InVEST, MaxEnt, etc.) and produce aligned, standardized layers. Metadata associated with the outputs is generated automatically.
-The project is part of a broader effort to enhance reproducibility, transparency, and scalability in environmental monitoring and conservation planning.
+The aim of these scripts is to produce raster layers for each of the indicators used to build the pillars of the EI. The users decide on the data to be used as well as on certain methodological parameters. Then, the scripts run appropriate models/softwares and produce aligned, standardized layers. Metadata associated with the outputs is generated automatically.
+
+Our objectives:
 - Automate the computation of ecological indicators from heterogeneous datasets.
 - Centralize data and scripts.
 - Facilitate regular updates of the EI with minimal user intervention.
 - Ensure full traceability and reproducibility of results.
-
+This project is part of a broader effort to enhance reproducibility, transparency, and scalability in environmental monitoring and conservation planning.
 
 ## 📖 Methodology and references 
 
 Figure (how to add .png?)
 
 Honeck, Erica, Arthur Sanguet, Martin A. Schlaepfer, Nicolas Wyler, and Anthony Lehmann. 2020. “Methods for Identifying Green Infrastructure.” SN Applied Sciences 2 (11): 1916. https://doi.org/10.1007/s42452-020-03575-4.
-
-Lambiel, Audrey, Gregory Giuliani, Nathan Külling, and Anthony Lehmann (in preparation) A Digital Twin approach for the identification and update of Ecological Infrastructure.
-https://www.ge21.ch/
 
 Sanguet, Arthur, Nicolas Wyler, Benjamin Guinaudeau, Noé Waller, Loreto Urbina, Laurent Huber, Claude Fischer, and Anthony Lehmann. 2023. “Mapping Ecological Infrastructure in a Cross-Border Regional Context.” Land 12 (11): 2010. https://doi.org/10.3390/land12112010. 
 
@@ -32,15 +30,15 @@ repo_root/
 │   ├── mainenv.yml
 │   ├── invest3149.yml
 │── indicators/                            
-│   ├── pillar_indicator_additional.r
+│   ├── pillar_indicator_additional.r    # R scripts for each indicator
 │   ├── ...
 │── prioritization/ 
 │── README.md                            # This documentation
 │── tools/                           
 ```
 
-## Getting started
-From your personnal worspace on JupyterLab:
+## 🚀 Getting started
+From your personnal workspace on JupyterLab:
 
 1. Clone this repository
 
@@ -66,8 +64,13 @@ python -m ipykernel install --user --name kernel_name --display-name "Kernel nam
 
 3. Run script
 
-## 🚀 Reproducibility & FAIR Principles
+## 🤝 Reproducibility & FAIR Principles
 This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
 
 ## 🛡 Licence
 To be defined
+
+## Aknowledgment
+
+## Related article
+Lambiel, Audrey, Gregory Giuliani, Nathan Külling, and Anthony Lehmann (in preparation) A Digital Twin approach for the identification and update of Ecological Infrastructure.
