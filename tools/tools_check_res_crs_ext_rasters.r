@@ -1,5 +1,5 @@
 ####################################################################################
-###################################### Title #######################################
+##################### Check and correct CRS/EXT and resolution #####################
 ####################################################################################
 #                                                                                  #
 #                        PLEASE READ BEFORE RUNNING                                #
@@ -16,9 +16,9 @@
 
 
 # Paths ----------------------------------------------------------------------------
-    infold <- "/home/audreylambiel/GE21_IE/DATA/MEDIAN_NDVI_MONTH"
-    outfold <- "/home/audreylambiel/GE21_IE/DATA/MEDIAN_NDVI_MONTH_epsg2056"
-    ref <- "/home/audreylambiel/GE21_IE/RAWDATA/canton_ge/mask_sans_lac_rhone_arve_25m.tif"
+    infold <- "/home/path/to/input/folder"
+    outfold <- "/home/path/to/output/folder"
+    ref <- "/home/path/to/reference/raster.tif"
 
 ####################################################################################
 ############################### DO NOT MODIFY ######################################
