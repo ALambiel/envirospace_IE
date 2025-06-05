@@ -17,23 +17,20 @@
 
 # Paths ----------------------------------------------------------------------------
     # list to store paths of input raster data
-    input_raster_data_path <- list("/home/audreylambiel/GE21_IE/DATA/SIPV_MN_CARTO_GG_25m/SIPV_MN_CARTO_GG_25m.tif",
-                                  "/home/audreylambiel/GE21_IE/DATA/MNT25_GG/MNT25.tif",
-                                  "/home/audreylambiel/GE21_IE/DATA/PRECIPITATIONS_GG/precipitations.tif",
-                                  "/home/audreylambiel/GE21_IE/DATA/RAINFALL_EROSIVITY/rfactor.tif",
-                                  "/home/audreylambiel/GE21_IE/DATA/SOIL_ERODIBILITY/kfactor.tif")
+    input_raster_data_path <- list("/home/path/to/raster1.tif",
+                                  "/home/path/to/raster2.tif")
     # List to store paths of input vector data
-    input_vector_data_path <- list("/home/audreylambiel/GE21_IE/DATA/SHP_SIPV_MN_CARTO/SIPV_MN_CARTO_BRUTE.shp",
-                                  "/home/audreylambiel/GE21_IE/DATA/BASSIN_VERSANT_GG/bassins_versants.shp")
+    input_vector_data_path <- list("/home/path/to/vector1.shp",
+                                  "/home/path/to/vector2.shp")
     # Path to the study area file (either raster or vector)
-    study_area_path <- "/home/audreylambiel/GE21_IE/DATA/canton_ge/MASK_GE_25m.tif"
+    study_area_path <- "/home/path/to/studyarea.tif"
     # specify if the study area object is either a 'raster' or a 'vector' type object
     study_area_type <- "raster"
-    # Specify either a reduction factor (as numeric) or the desired extent of the bounding box directly
+    # Specify either a 'reduction_factor' (as numeric) or the desired extent of the 'bounding_box' directly
     # The other parameter must be set to NULL
     reduction_factor <- 50 
     bounding_box <- NULL # (xmin, xmax, ymin, ymax)
-    output_data_path <- "/home/audreylambiel/GE21_IE/DATA/TEST_SET"
+    output_data_path <- "/home/path/to/output/folder"
 
 ####################################################################################
 ############################### DO NOT MODIFY ######################################
