@@ -1,0 +1,24 @@
+name: r-spatial
+channels:
+  - conda-forge
+dependencies:
+  - openjdk=11
+  - r-base=4.3.3
+  - r-data.table=1.15.4
+  - r-dismo=1.3_14
+  - r-doparallel=1.0.17
+  - r-dplyr=1.1.4
+  - r-fnn=1.1.4
+  - r-foreach=1.5.2
+  - r-irkernel
+  - r-mass=7.3_60.0.1
+  - r-proj4=1.0_14
+  - r-purrr=1.0.2
+  - r-raster=3.6_26
+  - r-rgdal=1.6_7
+  - r-rjava=1.0_11
+  - r-sf=1.0_16
+  - r-sp=2.1_4
+  - r-stringr=1.5.1
+  - r-terra=1.7_78
+  - r-tidyterra=0.4.0
