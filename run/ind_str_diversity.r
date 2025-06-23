@@ -29,7 +29,7 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the mainenv environment when   #
+#   Make sure you select the kernel associated with the rspatial environment when  #
 #   you run the script.                                                            # 
 #                                                                                  #
 ####################################################################################
