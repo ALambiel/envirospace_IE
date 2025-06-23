@@ -17,13 +17,13 @@
 #   The final raster is obtained by reading the output(s) of the InVEST model      #
 #   and aggregating them. The final raster is clipped to the study area raster.    # 
 #                                                                                  #
-#   The results of this script are automatically saved in the "SE" subfolder of    #
+#   The results of this script are automatically saved in the "ES" subfolder of    #
 #   the project folder. Metadata file is automatically written in output folder.   #
 #   For the script to run correctly, you only need to modify sections 'Paths' and  #
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the invest3141.yml environment #
+#   Make sure you select the kernel associated with the invest3141 environment     #
 #   when you run the script.                                                       # 
 #                                                                                  #
 ####################################################################################
@@ -37,30 +37,30 @@
     #       http://releases.naturalcapitalproject.org/invest-userguide/latest/en/croppollination.html
 
     # Study area raster (.asc or .tif)
-    study_area_path <- "envirospace/projects/GE21/IE/..." 
+    study_area_path <- "path/to/data/..." 
 
     # Data for InVEST model
     # A landcover raster (.asc or .tif)
-    landcover_raster_path <- "envirospace/projects/GE21/IE/..."
+    landcover_raster_path <- "path/to/data/..."
     # A table mapping each pollinator species or guild of interest to its pollination-related parameters (.csv ; sep="," ; UTF-8 encoded)
-    guild_table_path <- "envirospace/projects/GE21/IE/..."
+    guild_table_path <- "path/to/data/..."
     # A table mapping each LULC class to nesting availability and floral abundance data for each substrate and season in that LULC class (.csv ; sep="," ; UTF-8 encoded)
-    landcover_biophysical_table_path <- "envirospace/projects/GE21/IE/..."
+    landcover_biophysical_table_path <- "path/to/data/..."
 
 
 # Parameters ------------------------------------------------------------------------
     # Project
     # Name of the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.
-    project_name <- "test" 
+    project_name <- "version name" 
     # Name of the pillar
-    pillar_name <- "SE" 
+    pillar_name <- "ES" 
     # Name of the indicator
     indicator_name <- "POLLINATION"
     # Give a short descrition of the indicator
-    description <- paste0("Capacité des écosystèmes à soutenir les pollinisateurs (modèle InVEST).", "\n",
+    description <- paste0("Capacity of ecosystems to support pollinators (InVEST model).", "\n",
                           "http://releases.naturalcapitalproject.org/invest-userguide/latest/en/croppollination.html")
     
     # Datas and computing parameters
@@ -74,7 +74,7 @@
 
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
     track_to_trash <- "YES" 
@@ -175,7 +175,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATEURS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
         # Directory for final outputs
@@ -190,7 +190,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         writeLines(paste(Sys.time(), "RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -225,13 +225,13 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file
         info <- c(info, paste0("INPUTS : ", "\n",
-                               " * Zone d'étude : ", study_area_path, "\n",
-                               " * Raster LULC  : ", landcover_raster_path, "\n",
-                               " * Table des guildes : ", guild_table_path, "\n"))
+                               " * Study area: ", study_area_path, "\n",
+                               " * LULC raster: ", landcover_raster_path, "\n",
+                               " * Guild table: ", guild_table_path, "\n"))
         info <- c(info, info_guild_table) 
-        info <- c(info, paste0(" * Table biophysique : ", "\n"))
+        info <- c(info, paste0(" * Biophysical table: ", "\n"))
         info <- c(info, info_landcover_biophysical_table)
-        info <- c(info, paste0(" * Temps de lecture : ", time_loading, " min", "\n\n"))
+        info <- c(info, paste0(" * Reading time: ", time_loading, " min", "\n\n"))
     # 2) Modelling ----------------------------------------------------------------------
     # 2.1) Prepare the Python script ----------------------------------------------------
         write(paste(Sys.time(), "WRITE PYTHON SCRIPT"), tracking_file, append=TRUE)
@@ -273,11 +273,11 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with modelling parameters and running time 
-        info <- c(info, paste0("SCRIPT PYTHON POUR LE MODELE INVEST", "\n",
+        info <- c(info, paste0("PYTHON SCRIPT FOR INVEST MODEL    ", "\n",
                                "##", "\n",
                                py_script, "\n",
                                "##", "\n",
-                               "Temps de calcul : ", time_prediction, " min", "\n\n"))
+                               "Computation time: ", time_prediction, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2.3) Prepare final result ---------------------------------------------------------
         write(paste(Sys.time(), "PREPARE FINAL RESULT"), tracking_file, append=TRUE)
@@ -304,13 +304,13 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with outputs' informations 
         info <- c(info, paste0("OUTPUTS", "\n",
-                                " * Prédiction finale sauvegardée dans le dossier : ", output_folder, "\n",
-                               " * Résolution : ", res(final_raster)[1], " m", "\n",
+                                " * Final prediction saved in: ", output_folder, "\n",
+                               " * Resolution : ", res(final_raster)[1], " m", "\n",
                                " * CRS : ", crs(final_raster, describe=TRUE)[1], "\n",
-                               " * Nombre de rasters compilés pour obtenir la prédiction finale : ", length(predictions_list)))
+                               " * Number of rasters compiled to obtain the final prediction: ", length(predictions_list)))
         info <- c(info, paste0("  ", predictions_list))
-        info <- c(info, paste0(" * Fonction d'aggrégation : ", aggregation_function, "\n",
-                               " * Temps de finalisation : ", time_finalising, " min"))
+        info <- c(info, paste0(" * Aggregation function: ", aggregation_function, "\n",
+                               " * Completion time: ", time_finalising, " min"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
         writeLines(info, file.path(output_folder, "METADATA.txt")) 
@@ -329,7 +329,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration: ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
