@@ -46,27 +46,27 @@
     #  ==> Respect the specified data extension
 
     # Study area raster (.asc or .tif)
-    study_area_path <- "envirospace/projects/GE21/IE/..." 
+    study_area_path <- "path/to/data/..." 
     # Directory with environmental predictors rasters (.asc or .tif)
-    predictors_path <- "envirospace/projects/GE21/IE/..."
+    predictors_path <- "path/to/data/..."
     # Table with focus species and their conservation status (.csv, sep=","), with at least 'NAME' and 'PRIO' column
-    species_list_path <- "envirospace/projects/GE21/IE/..." 
+    species_list_path <- "path/to/data/..." 
     # Species observations (.csv, sep=",") with at least 'NAME', 'X' and 'Y' column
-    species_obs_path <- "envirospace/projects/GE21/IE/..." 
+    species_obs_path <- "path/to/data/..." 
     
 # Parameters ------------------------------------------------------------------------
     # Project
     # Name of the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.
-    project_name <- "test" 
+    project_name <- "version name" 
     # Name of the pillar 
     pillar_name <- "COMPOSITION"
     # Name of the indicator 
-    indicator_name <- "FAUNE"
+    indicator_name <- "FAUNA"
     # Give a short descrition of the indicator
-    description <- "Distribution d’espèces (faune) en utilisant des critères biotiques et abiotiques."
+    description <- "Distribution of species (fauna) using biotic and abiotic criteria."
 
     # Datas and computing parameters 
     # CRS in which your data are
@@ -247,15 +247,15 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATEURS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
         # Directory for final outputs
         output_folder <- file.path(work_directory, pillar_name, indicator_name)
-        # Subfolder for 'Red List' habitat (LR)
-        LR <- file.path(output_folder, "LR") 
-        # Subfolder for 'Non Red List' habitat (NLR)
-        NLR <-file.path(output_folder, "NLR") 
+        # Subfolder for 'Red List' habitat (RL)
+        LR <- file.path(output_folder, "RL") 
+        # Subfolder for 'Non Red List' habitat (NRL)
+        NLR <-file.path(output_folder, "NRL") 
     
         # Create the project folder and all its subfolders (if needed)
         dir.create(work_directory, showWarnings = FALSE, recursive = TRUE)
@@ -268,7 +268,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         writeLines(paste(Sys.time(), "RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -320,13 +320,13 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with inputs' informations 
-        info <- c(info, paste0("INPUTS : ", "\n",
-                               " * Zone d'étude : ", study_area_path, "\n",
-                               " * Fichier avec les observations d'espèces  : ", species_obs_path, "\n",
-                               " * Fichier de liste des espèces : ", species_list_path, "\n",
-                               " * Liste des predicteurs : ","\n"))
+        info <- c(info, paste0("INPUTS: ", "\n",
+                               " * Study area: ", study_area_path, "\n",
+                               " * Species observations file: ", species_obs_path, "\n",
+                               " * Species list file: ", species_list_path, "\n",
+                               " * Predictors list: ","\n"))
         info <- c(info, paste0("  ", predictors_list, "\n"))
-        info <- c(info, paste0(" * Temps de lecture : ", time_loading, " min", "\n\n"))
+        info <- c(info, paste0(" * Reading time: ", time_loading, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2) Modelling ----------------------------------------------------------------------
     # 2.1) Bias file for pseudo-asbence -------------------------------------------------
@@ -378,8 +378,8 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with running time 
         info <- c(info, paste0("BIAIS ", "\n",
-                               " * Biais basé sur ", length_bias, " couches.", "\n",
-                               " * Temps de calcul : ", time_bias, " min", "\n\n"))
+                               " * Bias based on ", length_bias, " layers.", "\n",
+                               " * Computation time: ", time_bias, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2.2) Fit, predict and evaluate ----------------------------------------------------
         write(paste(Sys.time(), "FIT, PREDICT AND EVALUATE"), tracking_file, append=TRUE)
@@ -471,23 +471,23 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with modelling parameters and running time 
         info <- c(info, paste0("MAXENT", "\n",
-                               " * Fonction appliquée : "))
+                               " * Applied function: "))
         info <- c(info, deparse(fit_pred_eval))
-        info <- c(info, paste0(" * Paramètres Maxent utilisés : "))
+        info <- c(info, paste0(" * Maxent parameters used: "))
         info <- c(info, paste0("  ", maxent_parameters, "\n"))
-        info <- c(info, paste0(" * Nombre de pseudo-absences générées : ", num_abs, "\n",
-                               " * Nombre min d'observations pour réaliser la prédiction : ", minimum_obs, "\n",
-                               " * Part des données conservées pour l'évaluation : ", test_proportion*100, " %", "\n",
-                               " * Entrainement et évaluation du modèle avec ", num_fit, " répétitions.", "\n", 
-                               " * Temps de calcul : ", time_prediction, " min", "\n\n"))
+        info <- c(info, paste0(" * Number of pseudo-absences generated: ", num_abs, "\n",
+                               " * Minimum number of observations to make the prediction: ", minimum_obs, "\n",
+                               " * Percentage of data retained for evaluation: ", test_proportion*100, " %", "\n",
+                               " * Training and evaluation of the model with ", num_fit, " repetitions.", "\n", 
+                               " * Computation time: ", time_prediction, " min", "\n\n"))
         info <- c(info, paste0("OUTPUTS", "\n",
-                               " * Prédictions finales sauvegardées dans le dossier : ", output_folder, "\n",
-                               " * Résolution : ", output_resolution, " m", "\n",
+                               " * Final predictions saved in: ", output_folder, "\n",
+                               " * Resolution: ", output_resolution, " m", "\n",
                                " * CRS : ", output_crs, "\n",
-                               " * Nombre total d'espèces modélisées : ", length(selected_species), "\n",
-                               " * Espèces LR :"))
+                               " * Total number of species modelled: ", length(selected_species), "\n",
+                               " * RL species:"))
         info <- c(info, paste0("  ", list.files(LR), "\n"))
-        info <- c(info, paste0(" * Espèces NLR :"))
+        info <- c(info, paste0(" * NRL species:"))
         info <- c(info, paste0("  ", list.files(NLR), "\n"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
@@ -507,7 +507,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
                                            
 # Close error file
 close(err)
