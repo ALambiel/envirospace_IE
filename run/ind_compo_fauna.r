@@ -57,7 +57,7 @@
 # Parameters ------------------------------------------------------------------------
     # Project
     # Name of the main shared project folder
-    shared_directory <- "path/to/root/of/the/shared/folder"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.
     project_name <- "version name" 
