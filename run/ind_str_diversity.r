@@ -70,7 +70,7 @@
     col_map_ref <- "CODE_MN"
     # Name of the column in 'mn_attribute_table_path' corresponding to the reference categories
     col_table_ref <- "CODE_MN"
-    # Name of the column in 'mn_attribute_table_path' corresponding to the naturalness index value
+    # Name of the column in 'mn_attribute_table_path' corresponding to the diversity index value
     col_table_index <- "DIVERSITY"
     # All the values that can be taken by the index mentioned under 'col_table_index' and that correspond to the different types of green spaces. 
     diversity_classes <- c(1:8)
@@ -305,7 +305,7 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file 
-        info <- c(info, paste0("ASSIGNING NATURALNESS VALUES", "\n",
+        info <- c(info, paste0("ASSIGNING DIVERSITY VALUES", "\n",
                                " * Number of diversity classes: ", length(diversity_classes), "\n",
                                " * Background value: ", background_value, "\n",
                                " * Matching table: ", "\n",
