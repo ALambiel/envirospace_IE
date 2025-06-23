@@ -24,18 +24,37 @@ For more informations, please refers to:
 
 ## 📂 Folder structure
 
+This repository follows the above structure:
 ```
 envirospace_IE/
 │── config/                            # contains files for deploying required environments
 │   ├── rspatial.yml                   # 1st (main) environment with R packages for spatial analysis 
 │   └── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
 │── run/
-│   ├── <pillar_indicator.r>           
-│   ├── ...                         
+│   ├── <ind_pillar_indicator.r>       # one script for each indicator
+│   ├── ... 
 │   |   └── ...
 │   └── tools/                         # additional scripts for optional pre-processing
 └── README.md                          # this documentation
 ```
+Execution of the scripts (indicators or prioritization) creates new `OUTPUTS` folder, structured as follows:
+
+```
+working_directory/                     # depending on the folder you enter in the script
+└── OUTPUTS/
+    ├── INDICATORS/
+    |   └── <version>/                 # sub-folder to store all results from a single version
+    |      ├── <pillar>/               # one for each pillar, either “structure”, “ecosystem service”, ‘function’ or “composition”
+    |      |   └── <indicator>/        # one for each indicator that forms a pillar
+    |      |      ├── <result.tif>     # one or more rasters
+    |      |      └── METADATA.txt     # an automatically generated file with information on input data/parameters/etc.  
+    |      └── scratch/                # contains any intermediate results if retained 
+    └── PRIORITIZATION/
+        └── <version>/
+            ├── <result.tif>
+            └── METADATA.txt  
+```
+
 
 ## 🚀 Getting started
 From your `/home` workspace on JupyterLab, open a **terminal** and:
@@ -45,7 +64,6 @@ From your `/home` workspace on JupyterLab, open a **terminal** and:
 git clone https://github.com/ALambiel/envirospace_IE
 cd envirospace_IE
 ```
-Steps 2 and 3 have to be done both for `rspatial` and `invest3141`.
 
 2. Deploy `rspatial` environment and create associated kernel
 ```bash
@@ -70,7 +88,7 @@ q()
 python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14.1"
 ```
 
-4. Run R script
+4. Run script
 
 ## 🤝 Reproducibility & FAIR Principles
 This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
