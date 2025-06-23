@@ -26,7 +26,7 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the mainenv.yml environment    #
+#   Make sure you select the kernel associated with the rspatial environment       #
 #   when you run the script.                                                       # 
 #                                                                                  #
 ####################################################################################
@@ -38,27 +38,27 @@
     #  ==>   The raster specified in 'study_area_path' will be used as a reference, meaning that the products will have the same resolution, extent and CRS as it. An aggregated 25m version of the final raster will then be produced. 
 
     # Study area raster (.asc or .tif) 
-    study_area_path <- "envirospace/projects/GE21/IE/..."
+    study_area_path <- "path/to/data/..."
     # Map of natural habitats for the above-mentioned study area, where each polygon is assigned a habitat category (.shp) 
-    habitat_map_path <- "envirospace/projects/GE21/IE/..."
+    habitat_map_path <- "path/to/data/..."
     # Attribute table linking all categories of the habitat map with a value of permeability (.csv, sep=",") 
-    mn_attribute_table_path <- "envirospace/projects/GE21/IE/..."   
+    mn_attribute_table_path <- "path/to/data/..."   
 
 
 # Parameters ------------------------------------------------------------------------
     # Project
     # Name of the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.
-    project_name <- "test"
+    project_name <- "version name"
     # Name of the pillar
     pillar_name <- "STRUCTURE" 
     # Name of the indicator
-    indicator_name <- "PERMEABILITE"
+    indicator_name <- "PERMEABILITY"
     # Give a short descrition of the indicator
-    description <- paste0("Perméabilité du territoire calculée comme le pourcentage de la zone environnante d'un pixel occupée par des surfaces perméables.", "\n",
-                          "L'indice prend des valeurs comprises entre 0 (imperméable) et 1 (perméable). Pourcentage du territoire étudié couvert par des surfaces perméables.")
+    description <- paste0("Land permeability calculated as the percentage of a pixel's surrounding area occupied by permeable surfaces.", "\n",
+                          "The index takes values between 0 (impermeable) and 1 (permeable). Percentage of the study area covered by permeable surfaces.")
     
     # Datas and computing parameters
     # CRS of your projet, e.g. to which your data are
@@ -88,7 +88,7 @@
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
     # The temporary -non-compiled- results are saved here. 
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
     track_to_trash <- "YES"
@@ -218,7 +218,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS", "INDICATEURS", project_name)
+        work_directory <- file.path(shared_directory, "OUTPUTS", "INDICATORS", project_name)
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep = "_"))
         # Directory for final outputs
@@ -233,7 +233,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         writeLines(paste(Sys.time(),"RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Name : ", project_name, "\n",
+        info <- c(paste0("Version name : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -272,10 +272,10 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with inputs' informations 
         info <- c(info, paste0("INPUTS", "\n",
-                               " * Zone d'étude : ", study_area_path, "\n",
-                               " * Carte des milieux naturels  : ", habitat_map_path, "\n",
-                               " * Table attributaire : ", mn_attribute_table_path, "\n",
-                               " * Temps de lecture : ", time_loading, " min", "\n\n"))
+                               " * Study area: ", study_area_path, "\n",
+                               " * Natural habitat map: ", habitat_map_path, "\n",
+                               " * Attribute table: ", mn_attribute_table_path, "\n",
+                               " * Reading time: ", time_loading, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2) Compute permeability -----------------------------------------------------------
     # 2.1) Assigning permeability values ------------------------------------------------
@@ -291,11 +291,11 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(),"done"), tracking_file, append=TRUE)
         # Complete metadata file 
-        info <- c(info, paste0("ASSIGNATION DES VALEURS DE NATURALITE", "\n",
-                               " * Table de correspondance : ", "\n",
+        info <- c(info, paste0("ASSIGNING NATURALNESS VALUES", "\n",
+                               " * Matching table: ", "\n",
                                "  ",  col_map_ref, " <== ", col_table_index, "\n"))
         info <- c(info, paste0("  '", mn_attribute_table[,"REF"],"' <== '", mn_attribute_table[,"INDEX"],"'", "\n"))
-        info <- c(info, paste0(" * Temps de calcul : ", time_reclassify, " min", "\n\n"))
+        info <- c(info, paste0(" * Computation time: ", time_reclassify, " min", "\n\n"))
     # 2.2) Rasterize the reclassified habitat map -----------------------------------------
         write(paste(Sys.time(), "RASTERISING"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -309,8 +309,8 @@ tryCatch({
         extended_permeability_raster <- extend_by_euclidean_allocation(permeability_raster, buffer_size)
         
         # Save temporary layers in scratchfold
-        writeRaster(permeability_raster, file.path(scratch_folder, "mn_permeabilite.tif"), overwrite=TRUE)
-        writeRaster(extended_permeability_raster, file.path(scratch_folder, paste0("mn_permeabilite_buff", buffer_size, "m.tif")), overwrite=TRUE)
+        writeRaster(permeability_raster, file.path(scratch_folder, "mn_permeability.tif"), overwrite=TRUE)
+        writeRaster(extended_permeability_raster, file.path(scratch_folder, paste0("mn_permeability_buff", buffer_size, "m.tif")), overwrite=TRUE)
 
         # Free memory
         rm(permeability_raster)
@@ -322,9 +322,9 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file 
-        info <- c(info, paste0("RASTERISATION ET EXTENSION PAR ALLOCATION EUCLIDIENNE", "\n",
-                               " * Taille du buffer : ", buffer_size, " m", "\n",
-                               " * Temps de calcul : ", time_rasterizing, " min", "\n\n"))
+        info <- c(info, paste0("RASTERISATION AND EXTENSION BY EUCLIDEAN ALLOCATION", "\n",
+                               " * Buffer size: ", buffer_size, " m", "\n",
+                               " * Computation time: ", time_rasterizing, " min", "\n\n"))
     # 2.3) Compute focal statistics ---------------------------------------------------------
         write(paste(Sys.time(), "COMPUTE FOCAL STATISTICS"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -369,12 +369,12 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and outputs' informations
-        info <- c(info, paste0("STATISTIQUES ZONALES ", "\n",
-                               " * Fonction appliquée : ", "\n"))
+        info <- c(info, paste0("ZONAL STATISTICS", "\n",
+                               " * Applied function: ", "\n"))
         info <- c(info, deparse(mean_permeability))
-        info <- c(info, paste0(" * Taille de la fenêtre circulaire : ", circular_window_size, " m", "\n",
-                               " * Ratio maximal de NA acceptés dans la fenêtre : ", na_threshold, "\n",
-                               " * Temps de calcul : ", time_focal_stat, " min", "\n\n"))
+        info <- c(info, paste0(" * Circular moving window size: ", circular_window_size, " m", "\n",
+                               " * Maximum ratio of NA accepted in the window: ", na_threshold, "\n",
+                               " * Computation time: ", time_focal_stat, " min", "\n\n"))
     # 2.4) Prepare final result ---------------------------------------------------------
         write(paste(Sys.time(), "PREPARE FINAL RESULT"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -389,9 +389,9 @@ tryCatch({
         }
         
         # Save outputs
-        writeRaster(final_raster, file.path(output_folder, paste0("mn_permeabilite_focal_", res(final_raster)[1], "m.tif")), overwrite = TRUE)
+        writeRaster(final_raster, file.path(output_folder, paste0("mn_permeability_focal_", res(final_raster)[1], "m.tif")), overwrite = TRUE)
         if (!is.null(do_aggregate)) {
-          writeRaster(aggregated_raster, file.path(output_folder, paste0("mn_permeabilite_focal_", unique(res(final_raster)*do_aggregate), "m.tif")), overwrite = TRUE)
+          writeRaster(aggregated_raster, file.path(output_folder, paste0("mn_permeability_focal_", unique(res(final_raster)*do_aggregate), "m.tif")), overwrite = TRUE)
         }
 
         end_time <- Sys.time()
@@ -401,11 +401,11 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
        # Complete metadata file with computing and outputs' informations
         info <- c(info, paste0("OUTPUTS", "\n",
-                               " * Couches finales sauvegardées dans le dossier : ", output_folder, "\n",
-                               " * Résolutions : ", res(final_raster)[1], " et ", if (!is.null(do_aggregate)) res(aggregated_raster)[1], " m", "\n",
-                               " * Fonction d'aggrégation : ", if (!is.null(do_aggregate)) aggregation_function, "\n",
+                               " * Final layers saved in: ", output_folder, "\n",
+                               " * Resolutions : ", res(final_raster)[1], " et ", if (!is.null(do_aggregate)) res(aggregated_raster)[1], " m", "\n",
+                               " * Aggregation function: ", if (!is.null(do_aggregate)) aggregation_function, "\n",
                                " * CRS : ", crs(final_raster, describe = TRUE)[1], "\n",
-                               " * Temps de finalisation des résultats : ", time_finalising, " min", "\n\n"))
+                               " * Completion time: ", time_finalising, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
         writeLines(info, file.path(output_folder, "METADATA.txt")) 
@@ -424,7 +424,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration: ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
