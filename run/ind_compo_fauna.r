@@ -377,7 +377,7 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with running time 
-        info <- c(info, paste0("BIAIS ", "\n",
+        info <- c(info, paste0("BIAS ", "\n",
                                " * Bias based on ", length_bias, " layers.", "\n",
                                " * Computation time: ", time_bias, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
