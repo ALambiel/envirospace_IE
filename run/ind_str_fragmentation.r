@@ -38,8 +38,8 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the mainenv.yml environment    #
-#   when you run the script.                                                       # 
+#   Make sure you select the kernel associated with the rspatial environment when  #
+#   you run the script.                                                            # 
 #                                                                                  #
 ####################################################################################
 ####################################################################################
@@ -50,25 +50,25 @@
     #  ==>   The raster specified in 'study_area_path' will be used as a reference, meaning that the products will have the same resolution, extent and CRS as it. 
 
     # Study area raster (.asc or .tif) 
-    study_area_path <- "envirospace/projects/GE21/IE/..."
+    study_area_path <- "path/to/data/..."
     # Map of natural habitats for the above-mentioned study area, where each polygon is assigned a habitat category (.shp) 
-    habitat_map_path <- "envirospace/projects/GE21/IE/..."
+    habitat_map_path <- "path/to/data/..."
 
 # Parameters ------------------------------------------------------------------------
     # Project
     # Name of the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
-    project_name <- "test"
+    project_name <- "version name"
     # Name of the pillar
     pillar_name <- "STRUCTURE" 
     # Name of the indicator
     indicator_name <- "FRAGMENTATION"
     # Give a short description of the indicator
-    description <- paste0("Indice de morcellement du paysage (Jaeger, 2000) utilisé par l’OFEV. ", "\n",
-                          "Il prend en compte la surface des 'patches', c’est-à-dire des entités de milieux naturels constitutives du paysage.", "\n",
-                          "Plus la valeur de l’indicateur est basse, plus le paysage est fragmenté (égal à 0 s'il n'y a que des barrières).")
+    description <- paste0("Landscape fragmentation index (Jaeger, 2000) used by the FOEN.", "\n",
+                          "It takes into account the surface area of the ‘patches’, i.e. the natural habitat entities that make up the landscape.", "\n",
+                          "The lower the value of the indicator, the more fragmented the landscape (equal to 0 if there are only barriers).")
 
     # Datas and computing parameters 
     # CRS of your projet, e.g. to which your data are
@@ -102,7 +102,7 @@
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
     # The temporary -non-compiled- results are saved here.
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
     track_to_trash <- "YES"
@@ -276,7 +276,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS", "INDICATEURS", project_name)
+        work_directory <- file.path(shared_directory, "OUTPUTS", "INDICATORS", project_name)
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep = "_"))
         # Directory for final outputs
@@ -291,7 +291,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         write(paste(Sys.time(), "RUNNING ..."), tracking_file, append = TRUE)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -319,9 +319,9 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with inputs' informations 
         info <- c(info, paste0("INPUTS : ", "\n",
-                               " * Zone d'étude : ", study_area_path, "\n",
-                               " * Carte des milieux naturels : ", habitat_map_path, "\n",
-                               " * Temps de lecture : ", time_loading, " min","\n\n"))
+                               " * Study area: ", study_area_path, "\n",
+                               " * Natural habitat map: ", habitat_map_path, "\n",
+                               " * Reading time: ", time_loading, " min","\n\n"))
     # -----------------------------------------------------------------------------------
     # 2) Compute fragmentation ----------------------------------------------------------
     # 2.1) Extraction of barrier habitats -----------------------------------------------
@@ -337,11 +337,11 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file 
-        info <- c(info, paste0("SELECTION DES BARRIERES", "\n",
-                               " * Critères de sélection appliqués : ", "\n"))
+        info <- c(info, paste0("BARRIER SELECTION", "\n",
+                               " * Selection criteria applied: ", "\n"))
         info <- c(info, paste0(selection_criteria, "\n"))
-        info <- c(info, paste0(adjacency_criteria$SELECTED, " si adjacents à ", adjacency_criteria$SELECTOR, "\n"))
-        info <- c(info, paste0(" * Temps de calcul : ", time_extraction, " min", "\n\n"))
+        info <- c(info, paste0(adjacency_criteria$SELECTED, " if adjacent to ", adjacency_criteria$SELECTOR, "\n"))
+        info <- c(info, paste0(" * Computation time: ", time_extraction, " min", "\n\n"))
     # 2.2) Rasterize the reclassified habitat map ---------------------------------------
         write(paste(Sys.time(), "RASTERISING"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -354,8 +354,8 @@ tryCatch({
         extended_habitat_map <- extend_by_euclidean_allocation(habitat_map_raster, buffer_size)
         
         # Save temporary layers in scratchfold
-        writeRaster(habitat_map_raster, file.path(scratch_folder, "mn_naturalite.tif"), overwrite = TRUE)
-        writeRaster(extended_habitat_map, file.path(scratch_folder, paste0("mn_naturalite_buff", buffer_size, "m.tif")), overwrite = TRUE)
+        writeRaster(habitat_map_raster, file.path(scratch_folder, "mn_fragmentation.tif"), overwrite = TRUE)
+        writeRaster(extended_habitat_map, file.path(scratch_folder, paste0("mn_fragmentation_buff", buffer_size, "m.tif")), overwrite = TRUE)
 
         # Free memory
         rm(habitat_map_raster)
@@ -367,9 +367,9 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file 
-        info <- c(info, paste0("RASTERISATION ET EXTENSION PAR ALLOCATION EUCLIDIENNE", "\n",
-                               " * Taille du buffer : ", buffer_size, " m", "\n",
-                               " * Temps de calcul : ", time_rasterizing, " min", "\n\n"))
+        info <- c(info, paste0("RASTERISATION AND EXTENSION BY EUCLIDEAN ALLOCATION", "\n",
+                               " * Buffer size:", buffer_size, " m", "\n",
+                               " * Computation time: ", time_rasterizing, " min", "\n\n"))
     # 2.3) Compute focal statistics ---------------------------------------------------------
         write(paste(Sys.time(), "COMPUTE ZONAL STATISTICS"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -423,7 +423,7 @@ tryCatch({
         focal_raster <- rast(focal_raster)
 
         # Save temporary layers in scratch folder
-        writeRaster(focal_raster, file.path(scratch_folder, "mn_fragmentation_focal_brute.tif"), overwrite = TRUE)
+        writeRaster(focal_raster, file.path(scratch_folder, "mn_fragmentation_focal_raw.tif"), overwrite = TRUE)
     
         end_time <- Sys.time()
         time_focal_stat <- difftime(end_time, start_time, units = "mins")
@@ -431,12 +431,12 @@ tryCatch({
         # Update progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and outputs' informations
-        info <- c(info, paste0("STATISTIQUES ZONALES ", "\n",
-                               " * Fonction appliquée : ", "\n"))
+        info <- c(info, paste0("ZONAL STATISTICS", "\n",
+                               " * Applied function: ", "\n"))
         info <- c(info, deparse(effective_mesh_size))
-        info <- c(info, paste0(" * Taille de la fenêtre circulaire : ", circular_window_size, " m", "\n",
-                               " * Ratio maximal de NA acceptés dans la fenêtre : ", na_threshold, "\n",
-                               " * Temps de calcul ", time_focal_stat, " min", "\n\n"))
+        info <- c(info, paste0(" * Circular moving window size: ", circular_window_size, " m", "\n",
+                               " * Maximum ratio of NA accepted in the window: ", na_threshold, "\n",
+                               " * Computation time", time_focal_stat, " min", "\n\n"))
     # 2.4) Prepare final result ---------------------------------------------------------
         write(paste(Sys.time(), "PREPARE FINAL RESULT"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -463,11 +463,11 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and outputs' informations
         info <- c(info, paste0("OUTPUTS ", "\n",
-                               " * Couches finales sauvegardées dans le dossier : ", output_folder, "\n",
-                               " * Résolutions : ", res(final_raster)[1], " et ", if (!is.null(do_aggregate)) res(aggregated_raster)[1], " m", "\n",
-                               " * Fonction d'aggrégation : ", aggregation_function, "\n",
+                               " * Final layers saved in the: ", output_folder, "\n",
+                               " * Resolutions : ", res(final_raster)[1], " et ", if (!is.null(do_aggregate)) res(aggregated_raster)[1], " m", "\n",
+                               " * Aggregation function: ", aggregation_function, "\n",
                                " * CRS : ", crs(final_raster, describe = TRUE)[1], "\n",
-                               " * Temps de finalisation des résultats : ", time_finalising, " min"))
+                               " * Completion time: ", time_finalising, " min"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
         writeLines(info, file.path(output_folder, "METADATA.txt")) 
@@ -486,7 +486,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration: ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
