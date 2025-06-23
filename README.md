@@ -25,11 +25,10 @@ For more informations, please refers to:
 ## 📂 Folder structure
 
 ```
-repo_root/
+envirospace_IE/
 │── config/                            # contains files for deploying required environments
-│   ├── mainenv.yml                    # 1st (main) environment with R packages for spatial analysis 
-│   ├── invest3149.yml                 # 2nd environment with R and Python packges/modules required to run InVEST
-│   ├── requirements.txt               
+│   ├── rspatial.yml                   # 1st (main) environment with R packages for spatial analysis 
+│   ├── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
 │── indicators/                        # contains scripts for indicator calculation                    
 │   ├── pillar_indicator.r             # one script per indicator
 │   ├── ...
@@ -46,34 +45,29 @@ From your `/home` workspace on JupyterLab, open a **terminal** and:
 git clone https://github.com/ALambiel/envirospace_IE
 cd envirospace_IE
 ```
-Steps 2 and 3 have to be done both for `mainenv` and `invest3149`.
+Steps 2 and 3 have to be done both for `rspatial` and `invest3141`.
 
-2. Deploy environments and install dependencies
+2. Deploy `rspatial` environment and create associated kernel
+```bash
+conda env create -f config/rspatial
+conda activate rspatial
 
-Replace `<env_path>` with the path to `.yml` file. Note that `<env_name>` is specified per default under the `name` line of the `.yml` file.
-```bash
-conda env create -f <env_path>
-conda activate <env_name>
-```
-Check if environment has been correctly created: `<env_name>` should now appears in the list. 
-```bash
-conda info --envs
-```
-
-3. Create associated kernel(s)
-```bash
-# R kernel for both environments
 R
-IRkernel::installspec(name = 'name_of_your_kernel', displayname = 'Name of your kernel')
+IRkernel::installspec(name = 'rspatial', displayname = 'Spatial analysis with R')
+q()
+```
+
+3. Deploy `invest3141` environment and create associated kernels
+```bash
+conda env create -f config/invest3141
+conda activate invest3141
+pip install natcap.invest==3.14.1
+
+R
+IRkernel::installspec(name = 'invest3141r', displayname = 'InVEST 3.14.1 with R')
 q()
 
-# python kernel ONLY for the InVEST related environment
-python -m ipykernel install --user --name name_of_your_kernel --display-name "Name of your kernel"
-```
-
-Check if kernels have been correctly created.  
-```bash
-jupyter kernelspec list
+python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14.1"
 ```
 
 4. Run R script
