@@ -3,13 +3,13 @@ This repository contains R scripts, configuration files and documentation for th
 This work has been designed to be used via a shared environment on JupyterHub and sripts have therefore been written to being run in this kind of environment. 
 
 ## 📌 Overview 
-The aim of these scripts is to produce raster layers for each of the indicators (see figure below) used to build the pillars of the EI, and then perferom a hierarchical prioritization of all this information in order to identify EI. The users decide on the data to be used as well as on certain methodological parameters. Then, the scripts run appropriate models/softwares to process input data and produce documented outputs.
+The aim of these scripts is to produce raster layers for each of the indicators (see figure below) used to build the pillars of the EI, and then perform a hierarchical prioritization of all this information in order to identify EI. The users decide on the input data to be used as well as on certain methodological parameters. Then, scripts run appropriate models/softwares to process data and produce documented outputs.
 The methodology is implemented through an automated **R-based processing pipeline** which is described in this document.
 
 Our objectives:
-- Automate the computation of ecological indicators from heterogeneous datasets.
-- Centralize data and scripts.
-- Facilitate regular updates of the EI with minimal user intervention.
+- Automate the computation of ecological indicators from heterogeneous datasets
+- Centralize data and scripts
+- Facilitate regular updates of the EI with minimal user intervention
 - Ensure full traceability and reproducibility of results.
 This project is part of a broader effort to enhance reproducibility, transparency, and scalability in environmental monitoring and conservation planning.
 
@@ -19,50 +19,64 @@ The methodology presented here is based on an assessment of the ecological quali
 <img src="https://github.com/ALambiel/envirospace_IE/blob/main/images/methodology_summary.png" data-canonical-src="https://github.com/ALambiel/envirospace_IE/blob/main/images/methodology_summary.png" width="1000" />
 
 For more informations, please refers to: 
-- Honeck, Erica, Arthur Sanguet, Martin A. Schlaepfer, Nicolas Wyler, and Anthony Lehmann. 2020. “Methods for Identifying Green Infrastructure.” *SN Applied Sciences* 2 (11): 1916. https://doi.org/10.1007/s42452-020-03575-4.
-- Sanguet, Arthur, Nicolas Wyler, Benjamin Guinaudeau, Noé Waller, Loreto Urbina, Laurent Huber, Claude Fischer, and Anthony Lehmann. 2023. “Mapping Ecological Infrastructure in a Cross-Border Regional Context.” *Land* 12 (11): 2010. https://doi.org/10.3390/land12112010. 
+- Honeck, Erica, Arthur Sanguet, Martin A. Schlaepfer, Nicolas Wyler, and Anthony Lehmann. 2020. “Methods for Identifying Green Infrastructure.” *SN Applied Sciences* 2 (11): 1916. [https://doi.org/10.1007/s42452-020-03575-4](https://doi.org/10.1007/s42452-020-03575-4).
+- Sanguet, Arthur, Nicolas Wyler, Benjamin Guinaudeau, Noé Waller, Loreto Urbina, Laurent Huber, Claude Fischer, and Anthony Lehmann. 2023. “Mapping Ecological Infrastructure in a Cross-Border Regional Context.” *Land* 12 (11): 2010. [https://doi.org/10.3390/land12112010](https://doi.org/10.3390/land12112010). 
 
 ## 📂 Folder structure
 
 ```
 repo_root/
 │── config/                            # contains files for deploying required environments
-│   ├── mainenv.yml
-│   ├── invest3149.yml
-│── indicators/                        # contains all scripts for indicator calculation                    
-│   ├── pillar_indicator.r
+│   ├── mainenv.yml                    # 1st (main) environment with R packages for spatial analysis 
+│   ├── invest3149.yml                 # 2nd environment with R and Python packges/modules required to run InVEST
+│   ├── requirements.txt               
+│── indicators/                        # contains scripts for indicator calculation                    
+│   ├── pillar_indicator.r             # one script per indicator
 │   ├── ...
-│── prioritization/                    # contains all scripts for prioritization 
+│── prioritization/                    # contains scripts for prioritization 
 │── README.md                          # this documentation
-│── tools/                             # Additional scripts for optional pre-processing
+│── tools/                             # additional scripts for optional pre-processing
 ```
 
 ## 🚀 Getting started
-From your personnal workspace on JupyterLab:
+From your `/home` workspace on JupyterLab, open a **terminal** and:
 
 1. Clone this repository
-
 ```bash
 git clone https://github.com/ALambiel/envirospace_IE
 cd envirospace_IE
 ```
+Steps 2 and 3 have to be done both for `mainenv` and `invest3149`.
 
 2. Deploy environments and install dependencies
 
+Replace `<env_path>` with the path to `.yml` file. Note that `<env_name>` is specified per default under the `name` line of the `.yml` file.
 ```bash
 conda env create -f <env_path>
 conda activate <env_name>
-
-# R kernel
-R
-IRkernel::installspec(name = 'mainenv', displayname = 'Main environment')
-q()
-
-# python kernel
-python -m ipykernel install --user --name kernel_name --display-name "Kernel name"
+```
+Check if environment has been correctly created: `<env_name>` should now appears in the list. 
+```bash
+conda info --envs
 ```
 
-3. Run script
+3. Create associated kernel(s)
+```bash
+# R kernel for both environments
+R
+IRkernel::installspec(name = 'name_of_your_kernel', displayname = 'Name of your kernel')
+q()
+
+# python kernel ONLY for the InVEST related environment
+python -m ipykernel install --user --name name_of_your_kernel --display-name "Name of your kernel"
+```
+
+Check if kernels have been correctly created.  
+```bash
+jupyter kernelspec list
+```
+
+4. Run R script
 
 ## 🤝 Reproducibility & FAIR Principles
 This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
