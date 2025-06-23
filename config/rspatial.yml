@@ -1,4 +1,4 @@
-name: r-spatial
+name: rspatial
 channels:
   - conda-forge
 dependencies:
