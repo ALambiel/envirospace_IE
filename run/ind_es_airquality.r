@@ -21,8 +21,8 @@
 #   'Parameters' below.                                                             #
 #   You don't need to make any other changes.                                       #
 #                                                                                   # 
-#   Make sure you select the kernel associated with the mainenv.yml environment     #
-#   when you run the script.                                                        # 
+#   Make sure you select the kernel associated with the rspatial environment when   #
+#   you run the script.                                                             # 
 #                                                                                   #
 #####################################################################################
 #####################################################################################
@@ -33,23 +33,23 @@
     #  ==>   Respect the specified data extension
 
     # Study area raster (.asc or .tif). Will be used as a reference for the CRS, the resolution and the extent of the outputs of this script
-    study_area_path <- "envirospace/projects/GE21/IE/..." 
+    study_area_path <- "path/to/data/..." 
     # Folder path containing NDVI rasters (which are in .asc or .tif)
-    ndvi_folder_path <- "envirospace/projects/GE21/IE/..."
+    ndvi_folder_path <- "path/to/data/..."
     
 # Parameters ------------------------------------------------------------------------
     # Project
     # name of the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
-    project_name <- "test" 
+    project_name <- "version name" 
     # Name of the pillar
-    pillar_name <- "SE" 
+    pillar_name <- "ES" 
     # Name of the indicator
     indicator_name <- "AIRQUALITY"
     # Give a short descrition of the indicator
-    description <- "Filtration des particules par la surface foliaire, estimée grâce au Leaf Area Index (LAI)."
+    description <- "Filtration of particles by the leaf surface, estimated using the Leaf Area Index (LAI)."
 
     # Datas and computing parameters 
     # CRS of your projet, e.g. to which your data are 
@@ -63,7 +63,7 @@
 
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
     track_to_trash <- "YES"
@@ -132,7 +132,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATEURS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
         # Directory for final outputs
@@ -147,7 +147,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         writeLines(paste(Sys.time(), "RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -174,10 +174,10 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # complete metadata file with inputs' informations 
         info <- c(info, paste0("INPUTS : ", "\n",
-                               " * Zone d'étude : ", study_area_path, "\n",
-                               " * Rasters NDVI : ", ndvi_folder_path, "\n"))
+                               " * Study area: ", study_area_path, "\n",
+                               " * NDVI rasters: ", ndvi_folder_path, "\n"))
         info <- c(info, paste0(ndvi_list, "\n"))
-        info <- c(info, paste0(" * Temps de lecture : ", time_loading, " min", "\n"))
+        info <- c(info, paste0(" * Reading time: ", time_loading, " min", "\n"))
     # -----------------------------------------------------------------------------------
     # 2) Computing Leaf Area Index ------------------------------------------------------
     # 2.1) Process NDVI rasters ---------------------------------------------------------
@@ -209,10 +209,10 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and output information
-        info <- c(info, paste0("TRAITEMENTS DES RASTERS NDVI : ", "\n",
-                               " * Nombre de rasters compilés : ", length(ndvi_list), "\n",
-                               " * Fonction appliquée pour l'aggrégation des rasters : ", aggregation_function, "\n",
-                               " * Temps de calcul : ", time_process_ndvi, " min", "\n\n"))
+        info <- c(info, paste0("NDVI RASTERS PROCESSING: ", "\n",
+                               " * Number of rasters compiled: ", length(ndvi_list), "\n",
+                               " * Function applied to raster aggregation: ", aggregation_function, "\n",
+                               " * Computation time: ", time_process_ndvi, " min", "\n\n"))
     # 2.2) Convert NDVI in LAI raster ---------------------------------------------------
         write(paste(Sys.time(), "COMPUTING LAI"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -232,12 +232,12 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and output information
-        info <- c(info, paste0("CALCUL DU LAI : ", "\n",
-                               " * LAI = ", lai_conversion_formula, ", où 'r' représente le raster NDVI", "\n",
-                               " * Temps de calcul : ", time_computing_lai, " min", "\n\n"))
+        info <- c(info, paste0("LAI COMPUTATION: ", "\n",
+                               " * LAI = ", lai_conversion_formula, ", where 'r' represent NDVI raster", "\n",
+                               " * Computation time: ", time_computing_lai, " min", "\n\n"))
         info <- c(info, paste0("OUTPUTS", "\n",
-                               " * Résultats sauvegardés dans le dossier : ", output_folder, "\n",
-                               " * Résolution : ", res(lai_raster)[1], " m", "\n",
+                               " * Results saved in the: ", output_folder, "\n",
+                               " * Resolution : ", res(lai_raster)[1], " m", "\n",
                                " * CRS : ", crs(lai_raster, describe=TRUE)[1], "\n"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
@@ -257,7 +257,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
