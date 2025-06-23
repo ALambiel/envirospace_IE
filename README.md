@@ -29,10 +29,16 @@ envirospace_IE/
 │── config/                            # contains files for deploying required environments
 │   ├── rspatial.yml                   # 1st (main) environment with R packages for spatial analysis 
 │   ├── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
-│── indicators/                        # contains scripts for indicator calculation                    
-│   ├── pillar_indicator.r             # one script per indicator
-│   ├── ...
-│── prioritization/                    # contains scripts for prioritization 
+│── run/
+│   ├── <pillar_indicator.r>           
+│   └── ...                        
+│   |   └── ...
+│── outputs/                           
+│   ├── <version>/
+|   |   └── <pillar>/
+|   |       └── <indicator>/
+|   |          └── result.tif
+│   └── <version>/
 │── README.md                          # this documentation
 │── tools/                             # additional scripts for optional pre-processing
 ```
