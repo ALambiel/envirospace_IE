@@ -15,7 +15,7 @@
 #   according to the formula entered by the user. The final raster is then cut from #
 #   the study area raster.                                                          # 
 #                                                                                   #
-#   The results of this script are automatically saved in the "SE" subfolder of the #
+#   The results of this script are automatically saved in the "ES" subfolder of the #
 #   project folder.Metadata file is automatically written in output folder.         #
 #   For the script to run correctly, you only need to modify sections 'Paths' and   #
 #   'Parameters' below.                                                             #
