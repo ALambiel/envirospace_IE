@@ -8,7 +8,7 @@
 #   study area. It uses the 'terra' packages to perform spatial operations.        #
 #                                                                                  #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the mainenv.yml environment    #
+#   Make sure you select the kernel associated with the rspatial environment       #
 #   when you run the script.                                                       # 
 #                                                                                  #
 ####################################################################################
