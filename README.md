@@ -28,19 +28,13 @@ For more informations, please refers to:
 envirospace_IE/
 │── config/                            # contains files for deploying required environments
 │   ├── rspatial.yml                   # 1st (main) environment with R packages for spatial analysis 
-│   ├── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
+│   └── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
 │── run/
 │   ├── <pillar_indicator.r>           
-│   └── ...                        
+│   ├── ...                         
 │   |   └── ...
-│── outputs/                           
-│   ├── <version>/
-|   |   └── <pillar>/
-|   |       └── <indicator>/
-|   |          └── result.tif
-│   └── <version>/
-│── README.md                          # this documentation
-│── tools/                             # additional scripts for optional pre-processing
+│   └── tools/                         # additional scripts for optional pre-processing
+└── README.md                          # this documentation
 ```
 
 ## 🚀 Getting started
@@ -55,7 +49,7 @@ Steps 2 and 3 have to be done both for `rspatial` and `invest3141`.
 
 2. Deploy `rspatial` environment and create associated kernel
 ```bash
-conda env create -f config/rspatial
+conda env create -f config/rspatial.yml
 conda activate rspatial
 
 R
@@ -65,7 +59,7 @@ q()
 
 3. Deploy `invest3141` environment and create associated kernels
 ```bash
-conda env create -f config/invest3141
+conda env create -f config/invest3141.yml
 conda activate invest3141
 pip install natcap.invest==3.14.1
 
@@ -82,7 +76,11 @@ python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14
 This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
 
 ## 🛡 Licence
-To be defined
+©UNIGE/GE21 2025. This work is licensed under Creative commons Attribution-NonCommercial-ShareAlike 4.0 International terms.
+
+<img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg" data-canonical-src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg"/> 
+
+You are free to use, modify, and distribute this software under the terms of the CC-BY-NC-SA 4.0. For more details, see the full license text: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ## Aknowledgment
 The authors would like to thank the Swiss Federal Office of the Environment (FOEN) for their financial support and express their gratitude to the RPT4 pilot committee. The authors gratefully acknowledge the members of the GE21 expert group from the University of Geneva (UNIGE), the Geneva School of Engineering, Architecture and Landscape (HEPIA), the Conservatory and Botanical Garden of Geneva (CJB) and the Cantonal Office for Agriculture and Nature (OCAN) for their previous work on establishing indicators and, more broadly, on developing the method for identifying ecological infrastructure, from which the present work is a continuation.
