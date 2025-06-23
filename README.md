@@ -90,12 +90,18 @@ python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14
 
 4. Run script
 
-## 🤝 Reproducibility & FAIR Principles
-This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
+Open any script from `run` folder, read it and modify: 
+- data/folder path
+- parameters
+
+Then, execute the code by launching a console and selecting the correct kernel.
 
 ## 📈 Future Improvements
 - Production of a tutorial/practical guide 
 - Provision of a test dataset
+
+## 🤝 Reproducibility & FAIR Principles
+This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
 
 ## 🛡 Licence
 ©UNIGE/GE21 2025. This work is licensed under Creative commons Attribution-NonCommercial-ShareAlike 4.0 International terms.
