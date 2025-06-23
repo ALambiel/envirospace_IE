@@ -93,6 +93,10 @@ python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14
 ## 🤝 Reproducibility & FAIR Principles
 This project adheres to the FAIR principles (Findable, Accessible, Interoperable, Reusable) and promotes open, transparent, and reproducible science. All scripts are annotated, and metadata is generated automatically to ensure traceability.
 
+## 📈 Future Improvements
+- Production of a tutorial/practical guide 
+- Provision of a test dataset
+
 ## 🛡 Licence
 ©UNIGE/GE21 2025. This work is licensed under Creative commons Attribution-NonCommercial-ShareAlike 4.0 International terms.
 
