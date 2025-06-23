@@ -15,7 +15,7 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the XXXXXXX.yml environment    #
+#   Make sure you select the kernel associated with the XXXXXXX environment        #
 #   when you run the script.                                                       # 
 #                                                                                  #
 ####################################################################################
@@ -25,11 +25,11 @@
     #  !! Make sure that the data you enter meets the following requirements : 
     #  ==>   requirement 1
 
-    study_area_path <- "envirospace/projects/GE21/IE/..."
+    study_area_path <- "path/to/data/..."
 # Parameters ------------------------------------------------------------------------
     # Project
     # Path to the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
     project_name <- ""
@@ -42,17 +42,17 @@
 
     # Datas and computing parameters
     # CRS of your projet, e.g. to which your data are
-    mycrs <- "EPSG:2056"
+    mycrs <- "EPSG:XXXX"
 
     # Add potential options (e.g. aggregation of final rasters to a lower resolution, etc.).
     
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
     # Temporary -non compiled- files were saved here. 
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
-    track_to_trash <- "NO"
+    track_to_trash <- "YES"
 
 ####################################################################################
 ############################### DO NOT MODIFY ######################################
@@ -115,7 +115,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
        # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATEURS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
         # Directory for final outputs
@@ -130,7 +130,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         write(paste(Sys.time(), "RUNNING ..."), tracking_file, append = TRUE)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version name : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -151,7 +151,7 @@ tryCatch({
         # Complete metadata file with inputs' informations 
         info <- c(info, paste0("INPUTS", "\n",
                                # list here all the input data
-                               "  Temps de lecture : ", time_loading, " min", "\n\n"))
+                               "  Loading time : ", time_loading, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2) Title --------------------------------------------------------------------------
     # 2.X) Subtitle X -------------------------------------------------------------------
@@ -193,10 +193,10 @@ tryCatch({
         write(paste(Sys.time(), "done"), tracking_file, append = TRUE)
         # Complete metadata file with ouptuts informations
         info <- c(info, paste0("OUTPUTS", "\n",
-                               " * Couches finales sauvegardées dans le dossier : ", output_folder, "\n",
-                               " * Résolutions : ", , " m", "\n",
+                               " * Final layers saved in: ", output_folder, "\n",
+                               " * Resolutions : ", , " m", "\n",
                                " * CRS : ", , 
-                               " * Temps de finalisation :", time_finalising, " min", "\n\n"))
+                               " * Completion time:", time_finalising, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
         writeLines(info, file.path(output_folder, "METADATA.txt")) 
@@ -215,7 +215,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration: ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
