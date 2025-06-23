@@ -23,9 +23,9 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the mainenv.yml environment    #
-#   when you run the script.                                                       # 
-#                                                                                  #
+#   Make sure you select the kernel associated with the rspatial environment when  #
+#   you run the script.                                                            # 
+#                                                                                  # 
 ####################################################################################
 ####################################################################################
 
@@ -42,25 +42,25 @@
     #  ==>   Respect the specified data extension
 
     # Study area raster (.asc or .tif)
-    study_area_path <- "envirospace/projects/GE21/IE/..."
+    study_area_path <- "path/to/data/..."
     # Map of natural habitats for the above-mentioned study area, where each polygon is assigned a habitat category (.shp) 
-    habitat_map_path <- "envirospace/projects/GE21/IE/..."
+    habitat_map_path <- "path/to/data/..."
     # Correspondence table between the categories of the habitat map and the new ones + their conservation status (.csv, sep=",") 
-    corr_table_path <- "envirospace/projects/GE21/IE/..."  
+    corr_table_path <- "path/to/data/..."  
 
 # Parameters ------------------------------------------------------------------------
     # Project
     # path to the main shared project folder
-    shared_directory <- "envirospace/projects/GE21/IE"
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
-    project_name <- "test" 
+    project_name <- "version name" 
     # Name of the pillar 
     pillar_name <- "COMPOSITION" 
     # Name of the indicator
     indicator_name <- "HABITAT"
     # Give a short descrition of the indicator
-    description <- "Milieux naturels et semi-naturels propices aux développements d’espèces faunistiques et floristiques."
+    description <- "Natural and semi-natural habitats suitable for the development of plant and animal species."
 
     # Datas and computing parameters
     # CRS of your projet, e.g. to which your data are
@@ -83,7 +83,7 @@
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
     # The temporary -non-compiled- results are saved here.
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
     track_to_trash <- "YES"
@@ -195,7 +195,7 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATEURS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
         # Folder for the many intermediate results, which can be deleted at the end
         scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
         # Directory for final outputs
@@ -216,7 +216,7 @@ tryCatch({
         tracking_file <- paste0(project_name, "_", script_name, ".txt")
         writeLines(paste(Sys.time(), "RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Version : ", project_name, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -261,13 +261,13 @@ tryCatch({
         write(paste(Sys.time(),"done"), tracking_file, append=TRUE)
         # Complete metadata file with inputs' informations 
         info <- c(info, paste0("INPUTS : ", "\n",
-                                       " * Zone d'étude : ", study_area_path, "\n",
-                                       " * Carte des milieux naturels  : ", habitat_map_path, "\n",
-                                       " * Catégories MN de référence : ", col_map_ref, "\n",
-                                       " * Table de correspondance : ", corr_table_path, "\n",
-                                       " * Catégories non-considérées : ","\n"))
+                                       " * Study area: ", study_area_path, "\n",
+                                       " * Natural habitat map: ", habitat_map_path, "\n",
+                                       " * Reference MN categories: ", col_map_ref, "\n",
+                                       " * Correspondence table: ", corr_table_path, "\n",
+                                       " * Categories not included: ","\n"))
         info <- c(info, paste0("  '", excluded_categories, "'","\n"))
-        info <- c(info, paste0(" * Temps de lecture : ", time_loading, " min", "\n\n"))
+        info <- c(info, paste0(" * Reading time : ", time_loading, " min", "\n\n"))
     # -----------------------------------------------------------------------------------
     # 2) Computing ----------------------------------------------------------------------
     # 2.1) Reclassification of habitat map categories -----------------------------------
@@ -283,11 +283,11 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(),"done"), tracking_file, append=TRUE)
         # Complete metadata file
-        info <- c(info, paste0("RECLASSEMENT ", "\n",
-                               " * Correspondances entre catégories : ", "\n",
+        info <- c(info, paste0("RECLASSIFICATION ", "\n",
+                               " * Matching categories: ", "\n",
                                "  ",  col_map_ref, " <== ", col_table_new, "\n"))
         info <- c(info, paste0("  '", corr_table[,"REF"],"' <== '", corr_table[,"RECLASS"],"'", "\n"))
-        info <- c(info, paste0(" * Temps de calcul : ", time_reclassify, " min", "\n\n"))
+        info <- c(info, paste0(" * Computation time: ", time_reclassify, " min", "\n\n"))
    # 2.2) Creating layers for each habitat ----------------------------------------------
         write(paste(Sys.time(), "CREATING LAYERS FOR EACH HABITAT"), tracking_file, append=TRUE)
         start_time <- Sys.time()
@@ -357,18 +357,18 @@ tryCatch({
         # Update the progress tracking file
         write(paste(Sys.time(), "done"), tracking_file, append=TRUE)
         # Complete metadata file with computing and outputs' informations
-        info <- c(info, paste0("EXTRACTION ET STATISTIQUES ZONALES ", "\n",
-                                       " * Fonction appliquée : ", zonal_stat_function, "\n",
-                                       " * Taille de la fenêtre circulaire : ", circular_window_size, " m", "\n",
-                                       " * Temps de calcul : ", time_computing, " min", "\n\n"))
+            info <- c(info, paste0("EXTRACTION AND ZONAL STATISTICS", "\n",
+                                       " * Applied function: ", zonal_stat_function, "\n",
+                                       " * Circular window size: ", circular_window_size, " m", "\n",
+                                       " * Comuptation time: ", time_computing, " min", "\n\n"))
         info <- c(info, paste0("OUTPUTS ", "\n",
-                               " * Couches finales sauvegardées dans le dossier : ", output_folder, "\n",
-                               " * Résolution : ", output_resolution, " m", "\n",
+                               " * Final layers saved in: ", output_folder, "\n",
+                               " * Resolution : ", output_resolution, " m", "\n",
                                " * CRS : ", output_crs, "\n",
-                               " * Nombre de couches produites : ", length(result), "\n",
-                               " * Milieux LR :", "\n"))
+                               " * Number of layers produced: ", length(result), "\n",
+                               " * RL habitats :", "\n"))
         info <- c(info, paste0("  ", list.files(LR), "\n"))
-        info <- c(info, paste0(" * Milieux NLR :", "\n"))
+        info <- c(info, paste0(" * NRL habitats:", "\n"))
         info <- c(info, paste0("  ", list.files(NLR), "\n"))
     # -----------------------------------------------------------------------------------
         # Save the metadata file in the output folder
@@ -388,7 +388,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration: ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
