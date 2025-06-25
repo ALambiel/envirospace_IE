@@ -2,28 +2,28 @@
 ######################## Running Zonation prioritization project  ##################
 ####################################################################################
 #                                                                                  #
-#                        PLEASE READ BEFORE RUNNING         
-# Description:
-# This script combines environmental or planning indicators 
-# (referred to as "pillars") into a hierarchical prioritization 
-# using the Zonation 5 software.
-#
-# Requirements:
-# - Zonation 5 must be installed (AppImage format)
-# - Installation info: https://github.com/Alambiel/envirospace_IE
-#
-# Script structure:
-# 1. Define input indicators (pillars)
-# 2. Set Zonation parameters 
-#    (More info: https://zonationteam.github.io/Zonation5/)
-# 3. Choose weighting options for prioritization
-# 4. Generate settings file for the Zonation project
-# 5. Launch Zonation and generate outputs
-#
-# Notes:
-# - Make sure the Zonation 5 AppImage is accessible and executable
-# - Outputs include prioritization maps and report files
-#
+#                        PLEASE READ BEFORE RUNNING                                #  
+# Description:                                                                     #
+# This script combines environmental or planning indicators                        #
+# (referred to as "pillars") into a hierarchical prioritization                    #
+# using the Zonation 5 software.                                                   #
+#                                                                                  #
+# Requirements:                                                                    #
+# - Zonation 5 must be installed (AppImage format)                                 #
+# - Installation info: https://github.com/Alambiel/envirospace_IE                  #
+#                                                                                  #
+# Script structure:                                                                #
+# 1. Define input indicators (pillars)                                             #
+# 2. Set Zonation parameters                                                       #
+#    (More info: https://zonationteam.github.io/Zonation5/)                        #
+# 3. Choose weighting options for prioritization                                   #
+# 4. Generate settings file for the Zonation project                               #
+# 5. Launch Zonation and generate outputs                                          #
+#                                                                                  #
+# Notes:                                                                           #
+# - Make sure the Zonation 5 AppImage is accessible and executable                 #
+# - Outputs include prioritization maps and report files                           #
+#                                                                                  #
 #   The results of this script are automatically saved in the "zonation_output"    #
 #   subfolder of the project folder. Metadata file is automatically written in the #
 #   output folder.                                                                 #
@@ -39,16 +39,16 @@
 
 # Paths ----------------------------------------------------------------------------
     # Path to Zonation5 AppImage (z5 executable)
-    z5_exe <- "/squashfs-root/usr/bin/z5"
+    z5_exe <- "/your/path/to/squashfs-root/usr/bin/z5"
 
     # Path to the main shared project folder
     shared_directory <- "/home/..."
 
     # Subdirectories containing raster files 
-    dir_structure <- "...INDICATORS/STRUCTURE"
-    dir_es <- "/...INDICATORS/SE"
-    dir_comp_lr <- "...INDICATORS/COMPOSITION/HABITAT/LR"
-    dir_comp_nlr <- "...INDICATORS/COMPOSITION/HABITAT/NLR"
+    dir_structure <- "path/to/folder/STRUCTURE"
+    dir_es <- "path/to/folder/ES"
+    dir_comp_lr <- "path/to/COMPOSITION/.../LR"
+    dir_comp_nlr <- "path/to/COMPOSITION/.../NLR"
 
     # Mask file path
     mask_file<-""
@@ -65,10 +65,10 @@
     # Clean up options
     # Do you want to delete the contents of the "scratch" folder at the end of the calculation? 'YES' or 'NO'
     # Temporary -non compiled- files were saved here. 
-    scratch_to_trash <- "NO"
+    scratch_to_trash <- "YES"
     # Do you want to delete the progress and error files generated while the script is running when it finishes? 'YES' or 'NO'
     # n.b.: If "YES" but an error occurs, the two files will not be deleted in all cases to allow debugging.  
-    track_to_trash <- "NO"
+    track_to_trash <- "YES"
 
 # Zonation specific parameters: 
 
@@ -148,9 +148,9 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
        # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS/PRIORITIZATION", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS", "PRIORITIZATION", version) 
         # Folder for the many intermediate results, which can be deleted at the end
-        scratch_folder <- file.path(work_directory, "scratch", date)
+        scratch_folder <- file.path(work_directory, "scratch")
         # Directory for final outputs
         output_folder <- file.path(work_directory,"zonation_output")
         # Directory for zonation settings files
@@ -326,7 +326,7 @@ script_end_time <- Sys.time()
 total_run_time <- difftime(script_end_time, script_start_time, units="mins")
 
 # Update the metadata file with the total run time 
-write(paste0("##### Durée totale : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
+write(paste0("##### Total duration : ", total_run_time, " min #####"), file.path(output_folder, "METADATA.txt"), append =TRUE) 
 
 # Close error file
 close(err)
