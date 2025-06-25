@@ -110,7 +110,7 @@ To run the **prioritization script** (`prio_zonation.R`), you’ll need to insta
 ```bash
 Zonation5.AppImage
 ```
-3. Make it executable and extract it, by running this in your environment
+3. Make it executable and extract it, by running this in your terminal, with the correct path
 ```bash
 chmod +x Zonation5.AppImage
 ./Zonation5.AppImage --appimage-extract
