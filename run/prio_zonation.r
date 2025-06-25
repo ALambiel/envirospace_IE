@@ -56,7 +56,7 @@
 # Parameters ------------------------------------------------------------------------
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
-    project_name <- ""
+    version <- ""
 
     # Datas and computing parameters
     # CRS of your projet, e.g. to which your data are
@@ -109,7 +109,7 @@ session_path <- strsplit(session_path, '/')[[1]]
 # Isolate the name of the script
 script_name <- tools::file_path_sans_ext(tail(session_path, n=1))
 # Set the name of error file
-error_file <- paste0(project_name, "_", script_name, "_err.out")
+error_file <- paste0(version, "_", script_name, "_err.out")
 # Create it
 err <- file(error_file, open = "a")
 
@@ -163,10 +163,10 @@ tryCatch({
         dir.create(settings_folder, showWarnings = FALSE, recursive = TRUE)
     
         # Initialising the tracking file 
-        tracking_file <- paste0(project_name, "_", script_name, ".txt")
+        tracking_file <- paste0(version, "_", script_name, ".txt")
         write(paste(Sys.time(), "RUNNING ..."), tracking_file, append = TRUE)
         # Initialising the metadata text file
-        info <- c(paste0("Projet : ", project_name, "\n",
+        info <- c(paste0("Projet : ", version, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n"))
     # -----------------------------------------------------------------------------------
