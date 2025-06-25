@@ -59,7 +59,7 @@
     shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.
-    project_name <- "version name"  
+    version <- "version name"  
     # Name of the pillar
     pillar_name <- "ES" 
     # Name of the indicator
@@ -111,7 +111,7 @@ session_path <- strsplit(session_path, '/')[[1]]
 # Isolate the name of the script
 script_name <- tools::file_path_sans_ext(tail(session_path, n=1))
 # Set the name of error file
-error_file <- paste0(project_name, "_", script_name, "_err.out")
+error_file <- paste0(version, "_", script_name, "_err.out")
 # Create it
 err <- file(error_file, open = "a")
 
@@ -191,11 +191,11 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
         # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS")
         # Folder for the many intermediate results, which can be deleted at the end
-        scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
+        scratch_folder <- file.path(work_directory, pillar_name, indicator_name, version, "scratch")
         # Directory for final outputs
-        output_folder <- file.path(work_directory, pillar_name, indicator_name)
+        output_folder <- file.path(work_directory, pillar_name, indicator_name, version)
     
         # Create directories if they don't exist
         dir.create(work_directory, showWarnings = FALSE, recursive = TRUE)
@@ -203,10 +203,10 @@ tryCatch({
         dir.create(output_folder, showWarnings = FALSE, recursive = TRUE)
     
         # Initialising the tracking file 
-        tracking_file <- paste0(project_name, "_", script_name, ".txt")
+        tracking_file <- paste0(version, "_", script_name, ".txt")
         writeLines(paste(Sys.time(), "RUNNING ..."), con=tracking_file)
         # Initialising the metadata text file
-        info <- c(paste0("Version : ", project_name, "\n",
+        info <- c(paste0("Version : ", version, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
@@ -249,7 +249,7 @@ tryCatch({
                                " * Vector watersheds : ", watersheds_path, "\n",
                                " * Biophysical table : ", biophysical_table_path))
         info <- c(info, info_biophysical_table)
-        info <- c(info, paste0(" * Reading time: ", time_loading, " min", "\n\n"))
+        info <- c(info, paste0(" * Loading time: ", time_loading, " min", "\n\n"))
     # 2) Modelling ----------------------------------------------------------------------
     # 2.1) Prepare the Python script ----------------------------------------------------
         write(paste(Sys.time(), "WRITE PYTHON SCRIPT"), tracking_file, append=TRUE)
@@ -257,7 +257,7 @@ tryCatch({
         # Set arguments for the InVEST model
         invest_arguments <- paste0("args ={", "\n",
                                    "'workspace_dir':", "'",scratch_folder,"'", "," , "\n",
-                                   "'results_suffix':", "'",project_name, "'","," , "\n",
+                                   "'results_suffix':", "'",version, "'","," , "\n",
                                    "'dem_path':", "'",dem_aligned_path, "'","," , "\n",
                                    "'erosivity_path':", "'",erosivity_aligned_path, "'","," , "\n",
                                    "'erodibility_path':", "'",erodibility_aligned_path, "'","," , "\n",
