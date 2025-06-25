@@ -56,7 +56,7 @@ working_directory/                     # depending on the folder you enter in th
 ```
 
 
-## 🚀 Getting started
+## 🚀 Getting started : environments and indicators
 From your `/home` workspace on JupyterLab, open a **terminal** and:
 
 1. Clone this repository
@@ -95,6 +95,41 @@ Open any script from `run` folder, read it and modify:
 - parameters
 
 Then, execute the code by launching a console and selecting the correct kernel.
+
+## 🚀 Getting started : Prioritization with Zonation 5
+To run the **prioritization script** (`prio_zonation.R`), you’ll need to install Zonation 5 using its AppImage.
+
+1. Download and extract Zonation AppImage 
+ [Zonation5_Linux.zip (latest release)](https://github.com/zonationteam/Zonation5/releases/latest/download/Zonation5_Linux.zip)
+
+2. Unzip the archive and load it to your JupyterLab environment
+```bash
+Zonation5.AppImage
+```
+3. Make it executable and extract it, by running this in your environment
+```bash
+chmod +x Zonation5.AppImage
+./Zonation5.AppImage --appimage-extract
+```
+
+This creates a folder called `squashfs-root/`, which contains the executable.
+
+4. Update Your R Script
+
+In the `prio_zonation.R` script, make sure to set the executable path:
+```r
+z5_exe <- "/your/path/to/squashfs-root/zonation5"
+```
+and modify all the input parameters to fit your prioritization purposes
+
+5. Launch the Prioritization
+
+Now run the script from JupyterLab using the `rspatial` environment:
+```r
+source("run/prio_zonation.R")
+```
+
+Zonation will read the indicator layers, generate a prioritization based on weights/groups/masks, and export the results.
 
 ## 📈 Future Improvements
 - Production of a tutorial/practical guide 
