@@ -125,12 +125,7 @@ and modify all the input parameters to fit your prioritization purposes
 
 5. Launch the Prioritization
 
-Now run the script from JupyterLab using the `rspatial` environment:
-```r
-source("run/prio_zonation.R")
-```
-
-Zonation will read the indicator layers, generate a prioritization based on weights/groups/masks, and export the results.
+Now run the script from JupyterLab using the `rspatial` environment. Zonation will read the indicator layers, generate a prioritization based on weights/groups/masks, and export the results.
 
 ## 📈 Future Improvements
 - Production of a tutorial/practical guide 
