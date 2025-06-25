@@ -122,7 +122,7 @@ This creates a folder called `squashfs-root/`, which contains the executable.
 
 In the `prio_zonation.R` script, make sure to set the executable path:
 ```r
-z5_exe <- "/your/path/to/squashfs-root/zonation5"
+z5_exe <- "/your/path/to/squashfs-root/usr/bin/z5"
 ```
 and modify all the input parameters to fit your prioritization purposes
 
