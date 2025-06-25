@@ -50,11 +50,15 @@ working_directory/                     # depending on the folder you enter in th
     |      |      └── METADATA.txt     # an automatically generated file with information on input data/parameters/etc.  
     |      └── scratch/                # contains any intermediate results if retained 
     └── PRIORITIZATION/
-        └── <version>/
-            ├── <result.tif>
-            └── METADATA.txt  
+        └── <version>/                # One subfolder per prioritization version
+            ├── zonation_output/
+            │   ├── rankmap.tif       # Final prioritization output raster
+            │   └── METADATA.txt      # Summary of processing and parameters
+            └── zonation_settings/
+                ├── settings.z5       # Zonation settings file
+                ├── all_files.txt     # List of input rasters with weights/groups
+                └── weight_group.txt  # Optional: group weights file (if used)
 ```
-
 
 ## 🚀 Getting started : environments and indicators
 From your `/home` workspace on JupyterLab, open a **terminal** and:
