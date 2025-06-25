@@ -32,7 +32,7 @@
     shared_directory <- "path/to/the/root/of/the/shared/folder"
     # Specify the name of an existing project or choose your new project's name
     # Please note that if you enter an existing project name, previously calculated results for this indicator may be overwritten.  
-    project_name <- ""
+    version <- ""
     # Name of the pillar (either "COMPOSITION", "STRUCTURE", "FONCTION", "SE")
     pillar_name <- "" 
     # Name of the indicator (In uppercase and without spaces/special characters !!)
@@ -68,7 +68,7 @@ session_path <- strsplit(session_path, '/')[[1]]
 # Isolate the name of the script
 script_name <- tools::file_path_sans_ext(tail(session_path, n=1))
 # Set the name of error file
-error_file <- paste0(project_name, "_", script_name, "_err.out")
+error_file <- paste0(version, "_", script_name, "_err.out")
 # Create it
 err <- file(error_file, open = "a")
 
@@ -115,11 +115,11 @@ tryCatch({
     # -----------------------------------------------------------------------------------
     # 1.3) Working directories ----------------------------------------------------------
        # Path to the working directory
-        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS", project_name) 
+        work_directory <- file.path(shared_directory, "OUTPUTS","INDICATORS") 
         # Folder for the many intermediate results, which can be deleted at the end
-        scratch_folder <- file.path(work_directory, "scratch", paste(pillar_name, indicator_name, date, sep="_"))
+        scratch_folder <- file.path(work_directory, pillar_name, indicator_name, version, "scratch")
         # Directory for final outputs
-        output_folder <- file.path(work_directory, pillar_name, indicator_name)
+        output_folder <- file.path(work_directory, pillar_name, indicator_name, version)
     
         # Create directories if they don't exist
         dir.create(work_directory, showWarnings = FALSE, recursive = TRUE)
@@ -127,10 +127,10 @@ tryCatch({
         dir.create(output_folder, showWarnings = FALSE, recursive = TRUE)
     
         # Initialising the tracking file 
-        tracking_file <- paste0(project_name, "_", script_name, ".txt")
+        tracking_file <- paste0(version, "_", script_name, ".txt")
         write(paste(Sys.time(), "RUNNING ..."), tracking_file, append = TRUE)
         # Initialising the metadata text file
-        info <- c(paste0("Version name : ", project_name, "\n",
+        info <- c(paste0("Version name : ", version, "\n",
                          "Date : ", date, "\n",
                          "User : ", user, "\n\n",
                          pillar_name, " - ", indicator_name, "\n",
