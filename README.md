@@ -106,10 +106,7 @@ To run the **prioritization script** (`prio_zonation.R`), you’ll need to insta
 1. Download and extract Zonation AppImage 
  [Zonation5_Linux.zip (latest release)](https://github.com/zonationteam/Zonation5/releases/latest/download/Zonation5_Linux.zip)
 
-2. Unzip the archive and load it to your JupyterLab environment
-```bash
-Zonation5.AppImage
-```
+2. Unzip the archive and load  `Zonation5` file in your JupyterLab environment
 3. Make it executable and extract it, by running this in your terminal, with the correct path
 ```bash
 chmod +x correctpath/Zonation5
