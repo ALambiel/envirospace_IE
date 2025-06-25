@@ -112,8 +112,8 @@ Zonation5.AppImage
 ```
 3. Make it executable and extract it, by running this in your terminal, with the correct path
 ```bash
-chmod +x Zonation5.AppImage
-./Zonation5.AppImage --appimage-extract
+chmod +x correctpath/Zonation5
+correctpath/Zonation5 --appimage-extract
 ```
 
 This creates a folder called `squashfs-root/`, which contains the executable.
