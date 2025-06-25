@@ -32,9 +32,9 @@ envirospace_IE/
 │   └── invest3141.yml                 # 2nd environment with R and Python packges/modules required to run InVEST 3.14.1
 │── run/
 │   ├── <ind_pillar_indicator.r>       # one script for each indicator
-│   ├── ... 
-│   |   └── ...
-│   └── tools/                         # additional scripts for optional pre-processing
+|   ├── template.r                     # this template allowing you to create new indicator's script
+│   ├── prio_zonation.r                # script for running Zonation prioritization project
+│   └── <tools.r>                      # additional scripts for optional pre-processing
 └── README.md                          # this documentation
 ```
 Execution of the scripts (indicators or prioritization) creates new `OUTPUTS` folder, structured as follows:
@@ -43,21 +43,21 @@ Execution of the scripts (indicators or prioritization) creates new `OUTPUTS` fo
 working_directory/                     # depending on the folder you enter in the script
 └── OUTPUTS/
     ├── INDICATORS/
-    |   └── <version>/                 # sub-folder to store all results from a single version
-    |      ├── <pillar>/               # one for each pillar, either “structure”, “ecosystem service”, ‘function’ or “composition”
-    |      |   └── <indicator>/        # one for each indicator that forms a pillar
-    |      |      ├── <result.tif>     # one or more rasters
-    |      |      └── METADATA.txt     # an automatically generated file with information on input data/parameters/etc.  
-    |      └── scratch/                # contains any intermediate results if retained 
+    |   └── <pillar>/                  # either “STRUCTURE”, “ES”, ‘FUNCTION’ or “COMPOSITION”
+    |      └── <indicator>/            # one for each indicator that forms a pillar
+    |          └── <version>/          # one sub-folder per indicator version
+    |             ├── <result.tif>     # final layer(s)
+    |             ├── METADATA.txt     # summary of processing and parameters  
+    |             └── scratch/         # optional: intermediate results 
     └── PRIORITIZATION/
-        └── <version>/                # One subfolder per prioritization version
+        └── <version>/                 # one sub-folder per prioritization version
             ├── zonation_output/
-            │   ├── rankmap.tif       # Final prioritization output raster
-            │   └── METADATA.txt      # Summary of processing and parameters
+            │   ├── rankmap.tif        # final prioritization output raster
+            │   └── METADATA.txt       # summary of processing and parameters
             └── zonation_settings/
-                ├── settings.z5       # Zonation settings file
-                ├── all_files.txt     # List of input rasters with weights/groups
-                └── weight_group.txt  # Optional: group weights file (if used)
+                ├── settings.z5        # Zonation settings file
+                ├── all_files.txt      # list of input rasters with weights/groups
+                └── weight_group.txt   # optional: group weights file (if used)
 ```
 
 ## 🚀 Getting started : environments and indicators
@@ -92,9 +92,9 @@ q()
 python -m ipykernel install --user --name invest3141 --display-name "InVEST 3.14.1"
 ```
 
-4. Run script
+4. You can now run indicators script
 
-Open any script from `run` folder, read it and modify: 
+Open any script from `run` folder, read it and modify as requested: 
 - data/folder path
 - parameters
 
@@ -106,11 +106,15 @@ To run the **prioritization script** (`prio_zonation.R`), you’ll need to insta
 1. Download and extract Zonation AppImage 
  [Zonation5_Linux.zip (latest release)](https://github.com/zonationteam/Zonation5/releases/latest/download/Zonation5_Linux.zip)
 
-2. Unzip the archive and load  `Zonation5` file in your JupyterLab environment
-3. Make it executable and extract it, by running this in your terminal, with the correct path
+2. Unzip the archive and load  `zonation5` file in a folder on your JupyterLab environment.
+
+3.Make it executable and extract it by opening a **terminal** and run: 
+
 ```bash
-chmod +x correctpath/Zonation5
-correctpath/Zonation5 --appimage-extract
+cd /your/path/to/zonation/folder
+
+chmod +x /your/path/to/file/zonation5
+/your/path/to/file/zonation5 --appimage-extract
 ```
 
 This creates a folder called `squashfs-root/`, which contains the executable.
@@ -121,9 +125,9 @@ In the `prio_zonation.R` script, make sure to set the executable path:
 ```r
 z5_exe <- "/your/path/to/squashfs-root/usr/bin/z5"
 ```
-and modify all the input parameters to fit your prioritization purposes
+and modify all the input parameters to fit your prioritization purposes.
 
-5. Launch the Prioritization
+5. Launch the prioritization
 
 Now run the script from JupyterLab using the `rspatial` environment. Zonation will read the indicator layers, generate a prioritization based on weights/groups/masks, and export the results.
 
