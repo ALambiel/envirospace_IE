@@ -42,7 +42,7 @@
     z5_exe <- "/your/path/to/squashfs-root/usr/bin/z5"
 
     # Path to the main shared project folder
-    shared_directory <- "/home/..."
+    shared_directory <- "path/to/the/root/of/the/shared/folder"
 
     # Subdirectories containing raster files 
     dir_structure <- "path/to/folder/STRUCTURE"
