@@ -31,7 +31,7 @@
 #   'Parameters' below.                                                            #
 #   You don't need to make any other changes.                                      #
 #                                                                                  # 
-#   Make sure you select the kernel associated with the XXXXXXX.yml environment    #
+#   Make sure you select the kernel associated with the rspatial.yml environment    #
 #   when you run the script.                                                       # 
 #                                                                                  #
 ####################################################################################
